@@ -5,6 +5,11 @@ class BlogPostsController < ApplicationController
   def index
     @blog_posts = user_signed_in? ? BlogPost.sorted : BlogPost.published.sorted
     @pagy, @blog_posts = pagy(@blog_posts)
+  rescue Pagy::OverFlowError
+    redirect_to root_(page: 1)
+
+  # params[:page] = 1
+  # retry
   end
 
   def show
